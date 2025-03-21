@@ -6,6 +6,7 @@ import { primaryColor } from '../../styles/GlobalStyles';
 const ProfileScreen = ({ navigation }) => {
     const handleLogout = async () => {
         await AsyncStorage.removeItem('user');
+        await AsyncStorage.removeItem('todos');
         navigation.replace('AuthStack');
     };
 

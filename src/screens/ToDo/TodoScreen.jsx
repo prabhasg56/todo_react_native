@@ -53,7 +53,7 @@ const TodoScreen = () => {
     if (!taskName.value) {
       Toast.show({
         type: 'info',
-        text1: 'Please Enter Task Name',
+        text1: 'Please Enter The Task Name',
       });
       return;
     };

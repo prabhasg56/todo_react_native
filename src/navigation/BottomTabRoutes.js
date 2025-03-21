@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { TodoStack, ProfileStack } from './StackRoutes';
 import { lightColor, primaryColor } from '../styles/GlobalStyles';
@@ -14,17 +14,13 @@ const BottomTabRoutes = () => {
         {
             name: "ToDo",
             component: TodoStack,
-            label: "ToDo",
-            width: 30,
-            height: 30,
+            label: "To-Do",
             header: false,
         },
         {
             name: "Profile",
             component: ProfileStack,
             label: "Profile",
-            width: 30,
-            height: 30,
             header: false,
         },
 
@@ -39,12 +35,12 @@ const BottomTabRoutes = () => {
                     let iconComponent;
 
                     if (routeName === "ToDo") {
-                        iconName = focused ? 'home' : 'home-outline';
-                        iconComponent = <MaterialCommunityIcons name={iconName} size={size} color={color} />
+                        iconName = focused ? 'tasks' : 'tasks';
+                        iconComponent = <FontAwesome5 name={iconName} size={size} color={color} />
 
                     } else if (routeName === "Profile") {
-                        iconName = focused ? 'CodeSandbox' : 'CodeSandbox';
-                        iconComponent = <AntDesign name={iconName} size={size} color={color} />
+                        iconName = focused ? 'person-circle' : 'person-circle-outline';
+                        iconComponent = <Ionicons name={iconName} size={size} color={color} />
                     } 
 
                     // You can return any component that you like here!
@@ -53,9 +49,7 @@ const BottomTabRoutes = () => {
                 tabBarActiveTintColor: '#fff',
                 tabBarInactiveTintColor:'#0c3841',
                 tabBarStyle:{
-                    // backgroundColor:'#e9f8fb'
-                    backgroundColor: lightColor
-
+                    backgroundColor: lightColor,
                 }
             })}
         >
