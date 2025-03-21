@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 import CustomButton from '../../components/Common/CustomButton';
 import CustomTextInput from '../../components/Common/CustomTextInput';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import TodoItem from '../../components/ToDo/TodoItem';
-import Toast from 'react-native-toast-message';
 
 const TodoScreen = () => {
   const [todos, setTodos] = useState([]);
+  const [addTodoLoader, setAddTodoLoader] = useState(false);
+
   const [taskInput, setTaskInput] = useState({
     taskName: {
       label: "New Task*",
@@ -25,14 +27,34 @@ const TodoScreen = () => {
 
   useEffect(() => {
     const loadTodos = async () => {
-      const savedTodos = await AsyncStorage.getItem('todos');
-      if (savedTodos) setTodos(JSON.parse(savedTodos));
+      try {
+        const savedTodos = await AsyncStorage.getItem('todos');
+        if (savedTodos) {
+          setTodos(JSON.parse(savedTodos));
+        }
+      } catch (error) {
+        console.error("Error loading todos:", error);
+      } 
     };
+
     loadTodos();
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem('todos', JSON.stringify(todos));
+    const saveTodos = async () => {
+      try {
+        setAddTodoLoader(true);
+        await AsyncStorage.setItem('todos', JSON.stringify(todos));
+      } catch (error) {
+        console.error("Error saving todos:", error);
+      } finally {
+        setAddTodoLoader(false);
+      }
+    };
+
+    if (todos.length > 0) {
+      saveTodos();
+    }
   }, [todos]);
 
   const handleInput = (label,value) => {
@@ -81,7 +103,7 @@ const TodoScreen = () => {
   return (
     <ScreenWrapper title="Todo List">
       <CustomTextInput labelName={taskName.label} name={'taskName'} placeholder={taskName.placeholder} value={taskName.value} handleInput={handleInput} />
-      <CustomButton label="Add Todo" onPress={addTodo} />
+      <CustomButton loader ={addTodoLoader} label="Add Todo" onPress={addTodo} />
       <FlatList
         data={todos}
         keyExtractor={(item) => item.id.toString()}

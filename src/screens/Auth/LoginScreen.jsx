@@ -43,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
       ...prevTaskInput,
       [label]: {
         ...prevTaskInput[label],
-        value
+        value: value.trim()
       }
     }))
   }
